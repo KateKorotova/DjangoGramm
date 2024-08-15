@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     bio = models.TextField(blank=True)
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars/', default='avatars/default_avatar.jpg', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return self.username

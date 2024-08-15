@@ -1,8 +1,26 @@
 from django import forms
-# from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 
 from .models import CustomUser
+
+
+class UserProfileForm(forms.ModelForm):
+	class Meta:
+		model = CustomUser
+		fields = ['first_name', 'last_name', 'bio', 'avatar']  # List of fields to include in the form
+		widgets = {
+			'avatar': forms.ClearableFileInput(attrs={'multiple': False}),  # Custom widget for file input
+			'bio': forms.Textarea(attrs={'rows': 3}),  # Custom widget for textarea
+		}
+
+	def clean_images(self):
+		images = self.cleaned_data.get('images')
+		if images:
+			# Check if the uploaded file is an image
+			if not images.content_type.startswith('image/'):
+				raise ValidationError(('Only image files are allowed.'))
+		return images
 
 
 class UserRegisterForm(UserCreationForm):
@@ -14,3 +32,12 @@ class UserRegisterForm(UserCreationForm):
 	class Meta:
 		model = CustomUser
 		fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name']
+
+	def clean_images(self):
+		images = self.cleaned_data.get('images')
+		if images:
+			# Check if the uploaded file is an image
+			if not images.content_type.startswith('image/'):
+				raise ValidationError(('Only image files are allowed.'))
+		return images
+

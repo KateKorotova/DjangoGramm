@@ -11,9 +11,7 @@ from django.db.models import OuterRef, Exists
 
 @login_required(login_url="/login/")
 def user_profile(request, username):
-    # Retrieve the user profile based on the username from the URL
     user = CustomUser.objects.get(username=username)
-    # Retrieve posts by this user
     posts = Post.objects.filter(user=user).prefetch_related('images', 'tags').annotate(
         liked=Exists(Like.objects.filter(user=request.user, post=OuterRef('pk')))
     ).order_by('-created_dt')
@@ -36,14 +34,11 @@ def toggle_like(request):
 
         liked = False
         if post.like_set.filter(user=request.user).exists():
-            # If already liked, remove the like
             post.like_set.filter(user=request.user).delete()
         else:
-            # Otherwise, add a like
             Like.objects.create(user=request.user, post=post)
             liked = True
 
-        # Return the new like count and status
         return JsonResponse({'liked': liked, 'like_count': post.like_set.count()})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 

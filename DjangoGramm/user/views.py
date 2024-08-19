@@ -42,7 +42,6 @@ def register(request):
 			email.attach_alternative(message, "text/html")
 			email.send()
 
-			# messages.success(request, 'Please confirm your email to complete registration.')
 			return redirect('email_confirmation_sent')
 	else:
 		form = UserRegisterForm()

@@ -19,9 +19,8 @@ class ImageForm(forms.ModelForm):
     def clean_images(self):
         images = self.cleaned_data.get('images')
         if images:
-            # Check if the uploaded file is an image
             if not images.content_type.startswith('image/'):
-                raise ValidationError(('Only image files are allowed.'))
+                raise ValidationError('Only image files are allowed.')
         return images
 
 

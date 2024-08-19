@@ -8,18 +8,17 @@ from .models import CustomUser
 class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = CustomUser
-		fields = ['first_name', 'last_name', 'bio', 'avatar']  # List of fields to include in the form
+		fields = ['first_name', 'last_name', 'bio', 'avatar']
 		widgets = {
-			'avatar': forms.ClearableFileInput(attrs={'multiple': False}),  # Custom widget for file input
-			'bio': forms.Textarea(attrs={'rows': 3}),  # Custom widget for textarea
+			'avatar': forms.ClearableFileInput(attrs={'multiple': False}),
+			'bio': forms.Textarea(attrs={'rows': 3}),
 		}
 
 	def clean_images(self):
 		images = self.cleaned_data.get('images')
 		if images:
-			# Check if the uploaded file is an image
 			if not images.content_type.startswith('image/'):
-				raise ValidationError(('Only image files are allowed.'))
+				raise ValidationError('Only image files are allowed.')
 		return images
 
 
@@ -36,7 +35,6 @@ class UserRegisterForm(UserCreationForm):
 	def clean_images(self):
 		images = self.cleaned_data.get('images')
 		if images:
-			# Check if the uploaded file is an image
 			if not images.content_type.startswith('image/'):
 				raise ValidationError('Only image files are allowed.')
 		return images

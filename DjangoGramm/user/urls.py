@@ -10,4 +10,3 @@ urlpatterns = [
     path('confirm-email/<uidb64>/<token>/', views.confirm_email, name='confirm_email'),
     path('edit-profile/', views.edit_profile, name='edit_profile'),
 ]
-

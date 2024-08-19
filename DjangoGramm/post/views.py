@@ -20,7 +20,9 @@ def user_profile(request, username):
     # Retrieve the user profile based on the username from the URL
     user = CustomUser.objects.get(username=username)
     # Retrieve posts by this user
-    posts = Post.objects.filter(user=user).prefetch_related('images', 'tags').order_by('-created_dt')
+    posts = Post.objects.filter(user=user).prefetch_related('images', 'tags').annotate(
+        liked=Exists(Like.objects.filter(user=request.user, post=OuterRef('pk')))
+    ).order_by('-created_dt')
     return render(request, 'user_profile.html', {'user': user, 'posts': posts})
 
 
@@ -90,11 +92,10 @@ def add_post(request):
         tag_form = TagForm()
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        html = render_to_string('partials/add_post_modal.html', {
+        html = render_to_string('partials/add_post_modal_body.html', {
             'images': image_form,
             'tags': tag_form
         }, request=request)
         return JsonResponse({'html': html})
 
     return redirect('user_profile', request.user.username)
-

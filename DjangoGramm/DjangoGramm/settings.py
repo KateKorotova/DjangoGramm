@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-n!4$b8fvbycxp8f1x6ddn^r1ap6*8%(smqqfmkj-50flu=_(vd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['DjangoGramm-env-1.eba-tnaysps3.us-east-2.elasticbeanstalk.com']
 
 
 # Application definition

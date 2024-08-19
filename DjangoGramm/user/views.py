@@ -96,10 +96,6 @@ def login_view(request):
 			if user is not None:
 				login(request, user)
 				return redirect('feed')
-			else:
-				messages.error(request, "Invalid username or password.")
-		else:
-			messages.error(request, "Error with the form.")
 	else:
 		form = AuthenticationForm()
 

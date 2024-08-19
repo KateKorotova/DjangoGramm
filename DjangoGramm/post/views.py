@@ -10,12 +10,6 @@ from django.db.models import OuterRef, Exists
 
 
 @login_required(login_url="/login/")
-def post_detail(request, id):
-    post = Post.objects.get(id=id)
-    return render(request, 'post_detail.html', {'post': post})
-
-
-@login_required(login_url="/login/")
 def user_profile(request, username):
     # Retrieve the user profile based on the username from the URL
     user = CustomUser.objects.get(username=username)
@@ -78,14 +72,7 @@ def add_post(request):
             post.save()
             return redirect('user_profile', request.user.username)
         else:
-            # Collect errors from both forms
-            form_errors = []
-            if not image_form.is_valid():
-                form_errors.extend(image_form.errors['images'].as_text().splitlines())
-            if not tag_form.is_valid():
-                form_errors.extend(tag_form.errors['tags'].as_text().splitlines())
-
-            error_message = 'Errors: ' + '; '.join(form_errors)
+            error_message = 'Errors: ' + '; '.join(image_form.errors['images'].as_text().splitlines())
             messages.error(request, error_message)
     else:
         image_form = ImageForm()

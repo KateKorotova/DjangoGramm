@@ -38,6 +38,6 @@ class UserRegisterForm(UserCreationForm):
 		if images:
 			# Check if the uploaded file is an image
 			if not images.content_type.startswith('image/'):
-				raise ValidationError(('Only image files are allowed.'))
+				raise ValidationError('Only image files are allowed.')
 		return images
 

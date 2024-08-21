@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <!-- Profile Section -->
+        <div class="col-md-4 text-center">
+            <!-- User Picture -->
+            <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/media/avatars/default_avatar.jpg{% endif %}"  alt="{{ user.username }}'s Avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+            <!-- User UserName -->
+            <h2 class="mt-3">{{ user.username }}</h2>
+            <p>{{ user.first_name }} {{ user.last_name }}</p>
+            <!-- User Bio -->
+            <p>{{ user.bio }}</p>
+            <!-- Edit Profile -->
+            {% if user.username == request.user.username %}
+            <a href="{% url 'edit_profile' %}">Edit Profile</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <hr class="my-4">
+
+    <!-- Photos Section -->
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-4 mb-4">
+            <div class="photo-container">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#postModal{{ post.id }}">
+                    <img src="{{ post.images.first.image.url }}" alt="User Photo" class="img-fluid">
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modals for each post -->
+{% for post in posts %}
+<div class="modal fade" id="postModal{{ post.id }}" tabindex="-1" aria-labelledby="postModalLabel{{ post.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="postModalLabel{{ post.id }}">{{ post.user.username }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="card-body p-0">
+                    {% include 'partials/post_content.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+{% block extra_js %}
+ <script src="{% static 'js/script_like.js' %}"></script>
+{% endblock extra_js %}

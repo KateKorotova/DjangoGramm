@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -6,13 +8,14 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
-from .forms import UserRegisterForm, UserProfileForm
-from .models import CustomUser
 from django.urls import reverse
 from django.core.mail import EmailMultiAlternatives
-import os
-from dotenv import load_dotenv
 from django.contrib.auth.decorators import login_required
+from dotenv import load_dotenv
+
+from .forms import UserRegisterForm, UserProfileForm
+from .models import CustomUser
+
 
 load_dotenv()
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')

@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import post_feed, user_profile, add_post,toggle_like
 
+from .views import post_feed, user_profile, add_post, toggle_like
 
 urlpatterns = [
     path('', post_feed, name='feed'),
